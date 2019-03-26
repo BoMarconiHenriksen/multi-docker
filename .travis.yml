@@ -28,9 +28,9 @@ after_success:
   # We then run the login command and add the docer id and it can expect to recieve the password over stdin.
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
+
   # Take all the build inamges and push them to docker hub
   - docker push bomarconi/multi-client
   - docker push bomarconi/multi-nginx
   - docker push bomarconi/multi-server
   - docker push bomarconi/multi-worker
-  

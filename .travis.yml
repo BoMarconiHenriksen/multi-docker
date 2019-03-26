@@ -3,12 +3,11 @@ services:
   # We want to get access to a copy of docker
   - docker
 
-Before_install:
+before_install:
   - docker build -t bomarconi/react-test -f ./client/Dockerfile.dev ./client
   # Build a test version of our client project
   # We use the Dockerfile.dev because we only get access to the test suites when we have all other dependencies attached to the project
   # We can not run test with the production file. -t = tag and -f = specify a dockerfile in the client folder and ./client is the build context
-
   # - docker build myOtherProject...
 
 # If a test fail the scipt will exit with a number higer than 0
@@ -28,7 +27,6 @@ after_success:
   # Get the password and emit over stdin as input to the next command(other side of the pipe).
   # We then run the login command and add the docer id and it can expect to recieve the password over stdin.
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-
 
   # Take all the build inamges and push them to docker hub
   - docker push bomarconi/multi-client

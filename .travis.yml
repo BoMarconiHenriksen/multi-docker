@@ -4,10 +4,10 @@ services:
   - docker
 
 before_install:
-  - docker build -t bomarconi/react-test -f ./client/Dockerfile.dev ./client
   # Build a test version of our client project
   # We use the Dockerfile.dev because we only get access to the test suites when we have all other dependencies attached to the project
   # We can not run test with the production file. -t = tag and -f = specify a dockerfile in the client folder and ./client is the build context
+  - docker build -t bomarconi/react-test -f ./client/Dockerfile.dev ./client
   # - docker build myOtherProject...
 
 # If a test fail the scipt will exit with a number higer than 0
@@ -33,3 +33,16 @@ after_success:
   - docker push bomarconi/multi-nginx
   - docker push bomarconi/multi-server
   - docker push bomarconi/multi-worker
+
+deploy:
+  provider: elsaticBeanstalk
+  region: us-east-2
+  app: multi-docker
+  env: MultiDocker-env
+  bucket_name: elasticbeanstalk-us-east-2-338074124185
+  bucket_path: docker-multi
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_id:
+    secure: $AWS_SECRET_KEY
